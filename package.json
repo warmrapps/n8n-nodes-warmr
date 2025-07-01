@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "n8n community node for Warmr integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,13 @@
     "type": "git",
     "url": "https://github.com/warmrapps/n8n-nodes-warmr"
   },
-  "keywords": ["n8n", "node", "warmr", "integration", "community"],
+  "keywords": [
+    "n8n",
+    "node",
+    "warmr",
+    "integration",
+    "community"
+  ],
   "devDependencies": {
     "@types/node": "^24.0.8",
     "ts-node": "^10.9.2",
@@ -23,6 +29,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "prepare": "rm -rf dist && mkdir dist && cp -R build/* dist/"
+    "prepare": "rm -rf dist && mkdir dist && cp -R build/* dist/",
+    "bump": "npm version patch --no-git-tag-version"
   }
 }
