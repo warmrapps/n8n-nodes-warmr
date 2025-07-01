@@ -12,13 +12,21 @@
   },
   "keywords": [
     "n8n",
-    "node",
+    "n8n-node",
+    "n8n-community-node-package",
     "warmr",
+    "crm",
+    "contacts",
+    "linkedin",
     "integration",
     "community"
   ],
   "devDependencies": {
     "@types/node": "^24.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.29.0",
+    "@typescript-eslint/parser": "^5.29.0",
+    "eslint": "^8.0.0",
+    "prettier": "^2.7.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
@@ -42,6 +50,10 @@
   "scripts": {
     "build": "pnpm bump && tsc",
     "bump": "npm version patch --no-git-tag-version",
-    "buildAndPublish": "pnpm run build && npm publish --access public"
+    "buildAndPublish": "pnpm run build && npm publish --access public",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix"
   }
 }
