@@ -6399,7 +6399,7 @@ snapshots:
       jsonwebtoken: 9.0.2
       mime-types: 2.1.35
       mkdirp: 1.0.4
-      moment: 2.30.1
+      moment: 2.29.4
       moment-timezone: 0.5.48
       open: 7.4.2
       python-struct: 1.1.3
