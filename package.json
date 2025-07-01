@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "2.0.14",
+  "version": "2.0.16",
   "description": "n8n community node for Warmr integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -28,12 +28,20 @@
     "node-fetch": "^3.3.2"
   },
   "files": [
-    "*"
+    "build"
   ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "build/credentials/WarmrApi.credentials.js"
+    ],
+    "nodes": [
+      "build/nodes/Contacts.node.js"
+    ]
+  },
   "scripts": {
     "build": "pnpm bump && tsc",
     "bump": "npm version patch --no-git-tag-version",
-    "publishLib": "pnpm run build && cp package.json build/ && cp README.md build/ && cd build && npm publish --access public",
-    "buildAndPublish": "pnpm run build && pnpm run publishLib"
+    "buildAndPublish": "pnpm run build && npm publish --access public"
   }
 }
