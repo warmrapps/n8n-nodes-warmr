@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "2.0.1",
+  "version": "2.0.3",
   "description": "n8n community node for Warmr integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -33,7 +33,7 @@
   "scripts": {
     "build": "tsc",
     "bump": "npm version patch --no-git-tag-version",
-    "publishLib": "pnpm run build && cp package.json build/ && cp README.md build/ && npm publish build --access public && rm -rf build && pnpm bump",
+    "publishLib": "pnpm run build && cp package.json build/ && cp README.md build/ && cd build && npm publish --access public && cd .. && rm -rf build && pnpm bump",
     "buildAndPublish": "pnpm run build && pnpm run publishLib"
   }
 }
