@@ -4,11 +4,11 @@
   "description": "n8n community node for Warmr integration",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "author": "Your Name <your@email.com>",
+  "author": "Warmr <support@warmr.app>",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/n8n-nodes-warmr"
+    "url": "https://github.com/warmrapps/n8n-nodes-warmr"
   },
   "keywords": ["n8n", "node", "warmr", "integration", "community"],
   "devDependencies": {
