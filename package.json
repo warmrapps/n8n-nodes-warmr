@@ -1,0 +1,27 @@
+{
+  "name": "n8n-nodes-warmr",
+  "version": "1.0.0",
+  "description": "n8n community node for Warmr integration",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "author": "Your Name <your@email.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/n8n-nodes-warmr"
+  },
+  "keywords": ["n8n", "node", "warmr", "integration", "community"],
+  "devDependencies": {
+    "@types/node": "^24.0.8",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "n8n-core": "^1.14.1",
+    "n8n-workflow": "^1.82.0",
+    "node-fetch": "^3.3.2"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}

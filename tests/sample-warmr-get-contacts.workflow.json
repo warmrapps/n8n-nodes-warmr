@@ -1,0 +1,23 @@
+{
+  "name": "Sample Warmr Get Contacts Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "getContacts",
+        "filters": "{}"
+      },
+      "id": "WarmrContactsNode1",
+      "name": "Warmr Contacts",
+      "type": "n8n-nodes-base.contacts",
+      "typeVersion": 1,
+      "position": [450, 300],
+      "credentials": {
+        "warmrApi": {
+          "id": "<YOUR_CREDENTIAL_ID>",
+          "name": "Warmr API"
+        }
+      }
+    }
+  ],
+  "connections": {}
+} 
