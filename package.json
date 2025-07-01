@@ -31,9 +31,9 @@
     "build"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "pnpm bump && tsc",
     "bump": "npm version patch --no-git-tag-version",
-    "publishLib": "pnpm run build && cp package.json build/ && cp README.md build/ && cd build && npm publish --access public && cd .. && rm -rf build && pnpm bump",
+    "publishLib": "pnpm run build && cp package.json build/ && cp README.md build/ && cd build && npm publish --access public",
     "buildAndPublish": "pnpm run build && pnpm run publishLib"
   }
 }
