@@ -31,6 +31,6 @@
   "scripts": {
     "build": "tsc",
     "bump": "npm version patch --no-git-tag-version",
-    "prepublishOnly": "pnpm run build"
+    "prepublishOnly": "pnpm run build && pnpm run bump && cp package.json build/ && cp README.md build/"
   }
 }
