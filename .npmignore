@@ -1,6 +1,10 @@
+# Only publish build output and essential files
+!build/
+README.md
+package.json
+
 # Exclude everything except dist and essential files
 src/
-build/
 nodes/
 services/
 utils/
