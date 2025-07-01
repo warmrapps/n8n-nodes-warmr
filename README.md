@@ -1,4 +1,5 @@
 # n8n-nodes-warmr
+<<<<<<< HEAD
 
 [![npm version](https://badge.fury.io/js/n8n-nodes-warmr.svg)](https://badge.fury.io/js/n8n-nodes-warmr)
 
@@ -56,3 +57,5 @@ MIT
 ## Support
 
 For help, open an issue on [GitHub](https://github.com/yourusername/n8n-nodes-warmr) or ask in the [n8n Community Forum](https://community.n8n.io/).
+=======
+>>>>>>> 7b95f5bd0cdd538bdd1b590f008e2798a94f5e39
