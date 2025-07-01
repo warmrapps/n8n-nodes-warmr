@@ -1,0 +1,16 @@
+# Exclude everything except dist and essential files
+src/
+build/
+nodes/
+services/
+utils/
+types/
+credentials/
+tests/
+*.ts
+!.d.ts
+index.ts
+tsconfig.json
+pnpm-lock.yaml
+.gitignore
+node_modules/ 
