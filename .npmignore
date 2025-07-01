@@ -1,9 +1,4 @@
-# Only publish build output and essential files
-!build/
-README.md
-package.json
-
-# Exclude everything except dist and essential files
+# Exclude source files and development files
 src/
 nodes/
 services/
@@ -17,4 +12,10 @@ index.ts
 tsconfig.json
 pnpm-lock.yaml
 .gitignore
-node_modules/ 
+node_modules/
+.git/
+.DS_Store
+
+# Don't exclude build directory or README
+!build/
+!README.md 
