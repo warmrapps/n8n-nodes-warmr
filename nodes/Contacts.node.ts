@@ -11,7 +11,7 @@ import type {
   ContactSearchQuery,
 } from "../types/contact.types";
 
-export class ContactsNode implements INodeType {
+export class Contacts implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Contacts",
     name: "contacts",
@@ -144,4 +144,4 @@ export class ContactsNode implements INodeType {
   }
 }
 
-export default ContactsNode;
+export default Contacts;

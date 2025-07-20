@@ -1,6 +1,6 @@
 import { ICredentialType, INodeProperties } from "n8n-workflow";
 
-export class WarmrApiCredentials implements ICredentialType {
+export class WarmrApi implements ICredentialType {
   name = "warmrApi";
   displayName = "Warmr API";
   documentationUrl = "https://docs.warmr.app/";
@@ -16,4 +16,4 @@ export class WarmrApiCredentials implements ICredentialType {
   ];
 }
 
-export default WarmrApiCredentials;
+export default WarmrApi;

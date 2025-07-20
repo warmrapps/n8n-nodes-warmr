@@ -1,5 +1,5 @@
-import ContactsNode from "./nodes/Contacts.node";
-import WarmrApiCredentials from "./credentials/WarmrApi.credentials";
+import Contacts from "./nodes/Contacts.node";
+import WarmrApi from "./credentials/WarmrApi.credentials";
 
-export const nodeTypes = [ContactsNode];
-export const credentialTypes = [WarmrApiCredentials];
+export const nodeTypes = [Contacts];
+export const credentialTypes = [WarmrApi];
