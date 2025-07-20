@@ -15,3 +15,5 @@ export class WarmrApiCredentials implements ICredentialType {
     },
   ];
 }
+
+export default WarmrApiCredentials;

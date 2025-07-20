@@ -143,3 +143,5 @@ export class ContactsNode implements INodeType {
     return this.prepareOutputData(returnData);
   }
 }
+
+export default ContactsNode;
