@@ -17,11 +17,23 @@ export class ContactsService {
       if (typeof v === "string") filtered[k] = v;
     });
     const params = new URLSearchParams(filtered);
-    return apiRequest<Contact[]>(
+    const response = await apiRequest<any>(
       `${BASE_URL}/contacts?${params.toString()}`,
       {},
       apiKey
     );
+    
+    // Handle different possible response structures
+    if (Array.isArray(response)) {
+      return response;
+    }
+    
+    if (response && Array.isArray(response.data)) {
+      return response.data;
+    }
+    
+    // If response is not in expected format, throw error with details
+    throw new Error(`Unexpected response format: ${JSON.stringify(response)}`);
   }
 
   static async createContact(

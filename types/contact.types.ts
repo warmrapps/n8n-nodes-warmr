@@ -56,3 +56,7 @@ export type ContactQuery = {
   pipeline_stage_id?: string;
   pipeline_stage_uuid?: string;
 };
+
+export type ContactsResponse = {
+  data: Contact[];
+};

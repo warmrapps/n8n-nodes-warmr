@@ -7,21 +7,21 @@ import {
 import { ContactsService } from "../services/ContactsService";
 import type {
   Contact,
-  ContactQuery,
   ContactSearchQuery,
 } from "../types/contact.types";
 
 export class Contacts implements INodeType {
   description: INodeTypeDescription = {
-    displayName: "Contacts",
+    displayName: "Warmr Contacts",
     name: "contacts",
     group: ["transform"],
     version: 1,
     description: "Manage Warmr contacts",
     defaults: {
-      name: "Contacts",
-      color: "#1F8EB2",
+      name: "Warmr Contacts",
+      color: "#e4d103",
     },
+    icon: "file:icon.png",
     inputs: ["main"] as any,
     outputs: ["main"] as any,
     credentials: [
@@ -95,6 +95,12 @@ export class Contacts implements INodeType {
             filters,
             credentials.apiKey
           );
+          
+          // Debug: Check what we actually got back
+          if (!Array.isArray(contacts)) {
+            throw new Error(`Expected array but got: ${typeof contacts}. Value: ${JSON.stringify(contacts)}`);
+          }
+          
           returnData.push(...contacts.map((c) => ({ json: c as IDataObject })));
         } else if (operation === "createContact") {
           const data = JSON.parse(
