@@ -46,14 +46,58 @@ export class Contacts implements INodeType {
       },
       // Add additional fields for each operation below
       {
-        displayName: "Filters",
-        name: "filters",
-        type: "json",
-        default: "{}",
+        displayName: "List UUID",
+        name: "listUuid",
+        type: "string",
+        default: "",
         displayOptions: {
           show: { operation: ["getContacts"] },
         },
-        description: "Contact search filters as JSON",
+        description: "Filter contacts by list UUID",
+      },
+      {
+        displayName: "UUID",
+        name: "uuid",
+        type: "string",
+        default: "",
+        displayOptions: {
+          show: { operation: ["getContacts"] },
+        },
+        description: "Filter by contact UUID",
+      },
+      {
+        displayName: "Sort Key",
+        name: "sortKey",
+        type: "string",
+        default: "",
+        displayOptions: {
+          show: { operation: ["getContacts"] },
+        },
+        description: "Field to sort by",
+      },
+      {
+        displayName: "Sort Direction",
+        name: "sortDirection",
+        type: "options",
+        options: [
+          { name: "Ascending", value: "asc" },
+          { name: "Descending", value: "desc" },
+        ],
+        default: "asc",
+        displayOptions: {
+          show: { operation: ["getContacts"] },
+        },
+        description: "Sort direction",
+      },
+      {
+        displayName: "Filters (Advanced)",
+        name: "filters",
+        type: "string",
+        default: "",
+        displayOptions: {
+          show: { operation: ["getContacts"] },
+        },
+        description: "Advanced filter string",
       },
       {
         displayName: "Contact Data",
@@ -88,9 +132,39 @@ export class Contacts implements INodeType {
       const operation = this.getNodeParameter("operation", i) as string;
       try {
         if (operation === "getContacts") {
-          const filters = JSON.parse(
-            this.getNodeParameter("filters", i) as unknown as string
-          ) as unknown as ContactSearchQuery;
+          const filters: ContactSearchQuery = {};
+          
+          // Build filters object from individual fields
+          const listUuid = this.getNodeParameter("listUuid", i) as string;
+          if (listUuid) filters.listUuid = listUuid;
+          
+          const pipelineStageUuid = this.getNodeParameter("pipelineStageUuid", i) as string;
+          if (pipelineStageUuid) filters.pipelineStageUuid = pipelineStageUuid;
+          
+          const uuid = this.getNodeParameter("uuid", i) as string;
+          if (uuid) filters.uuid = uuid;
+          
+          const entityUrn = this.getNodeParameter("entityUrn", i) as string;
+          if (entityUrn) filters.entityUrn = entityUrn;
+          
+          const objectUrn = this.getNodeParameter("objectUrn", i) as string;
+          if (objectUrn) filters.objectUrn = objectUrn;
+          
+          const archived = this.getNodeParameter("archived", i) as boolean;
+          filters.archived = archived;
+          
+          const sortKey = this.getNodeParameter("sortKey", i) as string;
+          if (sortKey) filters.sortKey = sortKey;
+          
+          const sortDirection = this.getNodeParameter("sortDirection", i) as "asc" | "desc";
+          if (sortDirection) filters.sortDirection = sortDirection;
+          
+          const advancedFilters = this.getNodeParameter("filters", i, "") as string;
+          if (advancedFilters) filters.filters = advancedFilters;
+          
+          const raw = this.getNodeParameter("raw", i) as boolean;
+          filters.raw = raw;
+          
           const contacts = await ContactsService.getContacts(
             filters,
             credentials.apiKey
