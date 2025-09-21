@@ -19,11 +19,16 @@ export interface FeedPost {
 }
 
 export interface Comment {
-	uuid?: string;
-	comment: string;
-	reaction?: 'like' | 'support' | 'funny' | 'love' | 'insightful' | 'celebrate';
+	id?: number;
+	author?: {
+		display_name: string;
+		avatar_url: string;
+	};
+	content?: string;
 	posted_at?: string;
-	author?: string;
+	status?: string;
+	reaction?: 'like' | 'support' | 'funny' | 'love' | 'insightful' | 'celebrate';
+	social_post_uuid?: string;
 }
 
 export interface GenerateCommentRequest {

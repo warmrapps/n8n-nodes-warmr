@@ -275,7 +275,12 @@ export class Feed implements INodeType {
           if (!postUuid) throw new Error("Post UUID is required");
           
           const comments = await FeedService.getComments(postUuid, credentials.apiKey);
-          returnData.push({ json: comments as IDataObject });
+          // Handle array response for comments
+          if (Array.isArray(comments)) {
+            returnData.push(...comments.map((comment) => ({ json: comment as IDataObject })));
+          } else {
+            returnData.push({ json: comments as IDataObject });
+          }
         } else if (operation === "generateComment") {
           const postUuid = this.getNodeParameter("postUuid", i) as string;
           if (!postUuid) throw new Error("Post UUID is required");

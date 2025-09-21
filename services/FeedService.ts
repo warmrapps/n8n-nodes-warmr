@@ -36,6 +36,7 @@ export class FeedService {
 			{ method: 'GET' },
 			apiKey
 		);
+		// Comments endpoint returns an array directly
 		return response;
 	}
 
