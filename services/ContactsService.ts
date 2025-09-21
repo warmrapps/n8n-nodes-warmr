@@ -1,7 +1,6 @@
 import { apiRequest } from "../utils/request";
 import type {
   Contact,
-  ContactQuery,
   ContactSearchQuery,
 } from "../types/contact.types";
 

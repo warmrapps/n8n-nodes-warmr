@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "2.0.53",
+  "version": "2.0.55",
   "description": "n8n community node for Warmr integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -44,7 +44,8 @@
       "dist/credentials/WarmrApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/Contacts.node.js"
+      "dist/nodes/Contacts.node.js",
+      "dist/nodes/Feed.node.js"
     ]
   },
   "scripts": {
