@@ -136,6 +136,16 @@ export class Feed implements INodeType {
         },
         description: "Filter for posts from favorite contacts",
       },
+      {
+        displayName: "Contact UUID",
+        name: "contactUuid",
+        type: "string",
+        default: "",
+        displayOptions: {
+          show: { operation: ["getFeed"] },
+        },
+        description: "Filter by specific contact UUID",
+      },
       // Comments operation fields
       {
         displayName: "Post UUID",
@@ -262,7 +272,10 @@ export class Feed implements INodeType {
           
           const favoriteContacts = this.getNodeParameter("favoriteContacts", i) as boolean;
           if (favoriteContacts !== undefined) feedQuery.favorite_contacts = favoriteContacts;
-          
+
+          const contactUuid = this.getNodeParameter("contactUuid", i) as string;
+          if (contactUuid) feedQuery.contact_uuid = contactUuid;
+
           const feed = await FeedService.getFeed(feedQuery, credentials.apiKey);
           // Handle array response for feed
           if (Array.isArray(feed)) {

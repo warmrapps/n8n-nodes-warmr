@@ -8,6 +8,7 @@ export interface FeedQuery {
 	search?: string;
 	interest?: string;
 	favorite_contacts?: boolean;
+	contact_uuid?: string;
 }
 
 export interface FeedPost {
