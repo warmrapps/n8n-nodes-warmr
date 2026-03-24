@@ -1,5 +1,3 @@
-import type { RequestInit } from "node-fetch";
-
 export async function apiRequest<T = any>(
   url: string,
   options: Record<string, any> = {},

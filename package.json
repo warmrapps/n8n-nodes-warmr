@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "2.0.58",
+  "version": "3.0.0",
   "description": "n8n community node for Warmr integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -45,7 +45,8 @@
     ],
     "nodes": [
       "dist/nodes/Contacts.node.js",
-      "dist/nodes/Feed.node.js"
+      "dist/nodes/Lists.node.js",
+      "dist/nodes/Companies.node.js"
     ]
   },
   "scripts": {
@@ -54,7 +55,7 @@
     "buildAndPublish": "pnpm run build && npm publish --access public",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix"
+    "lint": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' 'services/**/*.ts' 'types/**/*.ts' 'utils/**/*.ts'",
+    "lintfix": "eslint 'nodes/**/*.ts' 'credentials/**/*.ts' 'services/**/*.ts' 'types/**/*.ts' 'utils/**/*.ts' --fix"
   }
 }

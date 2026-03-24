@@ -2,226 +2,238 @@ import {
   IExecuteFunctions,
   INodeType,
   INodeTypeDescription,
-  IDataObject,
+  INodeExecutionData,
 } from "n8n-workflow";
 import { ContactsService } from "../services/ContactsService";
-import type {
-  Contact,
-  ContactSearchQuery,
-} from "../types/contact.types";
+import type { ContactInput, ContactSearchQuery } from "../types/contact.types";
 
 export class Contacts implements INodeType {
   description: INodeTypeDescription = {
     displayName: "Warmr Contacts",
-    name: "contacts",
+    name: "warmrContacts",
     group: ["transform"],
     version: 1,
-    description: "Manage Warmr contacts",
-    defaults: {
-      name: "Warmr Contacts",
-      color: "#e4d103",
-    },
+    description: "Manage Warmr contacts via the v1 API",
+    defaults: { name: "Warmr Contacts", color: "#e4d103" },
     icon: "file:icon.png",
     inputs: ["main"] as any,
     outputs: ["main"] as any,
-    credentials: [
-      {
-        name: "warmrApi",
-        required: true,
-      },
-    ],
+    credentials: [{ name: "warmrApi", required: true }],
     properties: [
       {
         displayName: "Operation",
         name: "operation",
         type: "options",
         options: [
-          { name: "Get Contacts", value: "getContacts" },
+          { name: "List Contacts", value: "listContacts" },
+          { name: "Get Contact", value: "getContact" },
           { name: "Create Contact", value: "createContact" },
           { name: "Update Contact", value: "updateContact" },
           { name: "Delete Contact", value: "deleteContact" },
         ],
-        default: "getContacts",
+        default: "listContacts",
         description: "Operation to perform",
       },
-      // Add additional fields for each operation below
+
+      // --- List Contacts filters ---
+      {
+        displayName: "Page",
+        name: "page",
+        type: "number",
+        default: 1,
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Page number (default: 1)",
+      },
+      {
+        displayName: "Per Page",
+        name: "perPage",
+        type: "number",
+        default: 50,
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Results per page (max 100)",
+      },
+      {
+        displayName: "Search",
+        name: "search",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Search by first name, last name, or email",
+      },
       {
         displayName: "List UUID",
         name: "listUuid",
         type: "string",
         default: "",
-        displayOptions: {
-          show: { operation: ["getContacts"] },
-        },
-        description: "Filter contacts by list UUID",
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Filter by list UUID",
       },
       {
-        displayName: "UUID",
+        displayName: "Archived",
+        name: "archived",
+        type: "boolean",
+        default: false,
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Whether to filter archived contacts",
+      },
+      {
+        displayName: "Is Favorite",
+        name: "isFavorite",
+        type: "boolean",
+        default: false,
+        displayOptions: { show: { operation: ["listContacts"] } },
+        description: "Whether to filter favorite contacts only",
+      },
+
+      // --- Get / Update / Delete by UUID ---
+      {
+        displayName: "Contact UUID",
         name: "uuid",
         type: "string",
         default: "",
+        required: true,
         displayOptions: {
-          show: { operation: ["getContacts"] },
+          show: { operation: ["getContact", "updateContact", "deleteContact"] },
         },
-        description: "Filter by contact UUID",
+        description: "UUID of the contact",
       },
+
+      // --- Create / Update fields ---
       {
-        displayName: "Sort Key",
-        name: "sortKey",
+        displayName: "First Name",
+        name: "firstName",
         type: "string",
         default: "",
-        displayOptions: {
-          show: { operation: ["getContacts"] },
-        },
-        description: "Field to sort by",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
       },
       {
-        displayName: "Sort Direction",
-        name: "sortDirection",
-        type: "options",
-        options: [
-          { name: "Ascending", value: "asc" },
-          { name: "Descending", value: "desc" },
-        ],
-        default: "asc",
-        displayOptions: {
-          show: { operation: ["getContacts"] },
-        },
-        description: "Sort direction",
-      },
-      {
-        displayName: "Filters (Advanced)",
-        name: "filters",
+        displayName: "Last Name",
+        name: "lastName",
         type: "string",
         default: "",
-        displayOptions: {
-          show: { operation: ["getContacts"] },
-        },
-        description: "Advanced filter string",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
       },
       {
-        displayName: "Contact Data",
-        name: "contactData",
-        type: "json",
-        default: "{}",
-        displayOptions: {
-          show: { operation: ["createContact", "updateContact"] },
-        },
-        description: "Contact data as JSON",
+        displayName: "Email",
+        name: "email",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
       },
       {
-        displayName: "Identifier",
-        name: "identifier",
-        type: "json",
-        default: "{}",
-        displayOptions: {
-          show: { operation: ["updateContact", "deleteContact"] },
-        },
-        description: "Identifier (uuid, linkedin_id, or email) as JSON",
+        displayName: "Phone",
+        name: "phone",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
+      },
+      {
+        displayName: "Website",
+        name: "website",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
+      },
+      {
+        displayName: "Headline",
+        name: "headline",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
+      },
+      {
+        displayName: "Location",
+        name: "location",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
+      },
+      {
+        displayName: "Country ISO",
+        name: "countryIso",
+        type: "string",
+        default: "",
+        displayOptions: { show: { operation: ["createContact", "updateContact"] } },
+        description: "2-letter ISO country code",
       },
     ],
   };
 
   async execute(this: IExecuteFunctions) {
     const items = this.getInputData();
-    const returnData = [];
-    const credentials = (await this.getCredentials("warmrApi")) as {
-      apiKey: string;
-    };
+    const returnData: INodeExecutionData[] = [];
+    const credentials = (await this.getCredentials("warmrApi")) as { apiKey: string };
+
     for (let i = 0; i < items.length; i++) {
       const operation = this.getNodeParameter("operation", i) as string;
+
       try {
-        if (operation === "getContacts") {
-          const filters: ContactSearchQuery = {};
-          
-          // Build filters object from individual fields
-          const listUuid = this.getNodeParameter("listUuid", i) as string;
-          if (listUuid) filters.listUuid = listUuid;
-          
-          const pipelineStageUuid = this.getNodeParameter("pipelineStageUuid", i) as string;
-          if (pipelineStageUuid) filters.pipelineStageUuid = pipelineStageUuid;
-          
+        if (operation === "listContacts") {
+          const result = await handleListContacts.call(this, i, credentials.apiKey);
+          returnData.push({ json: result } as INodeExecutionData);
+        } else if (operation === "getContact") {
           const uuid = this.getNodeParameter("uuid", i) as string;
-          if (uuid) filters.uuid = uuid;
-          
-          const entityUrn = this.getNodeParameter("entityUrn", i) as string;
-          if (entityUrn) filters.entityUrn = entityUrn;
-          
-          const objectUrn = this.getNodeParameter("objectUrn", i) as string;
-          if (objectUrn) filters.objectUrn = objectUrn;
-          
-          const archived = this.getNodeParameter("archived", i) as boolean;
-          filters.archived = archived;
-          
-          const sortKey = this.getNodeParameter("sortKey", i) as string;
-          if (sortKey) filters.sortKey = sortKey;
-          
-          const sortDirection = this.getNodeParameter("sortDirection", i) as "asc" | "desc";
-          if (sortDirection) filters.sortDirection = sortDirection;
-          
-          const advancedFilters = this.getNodeParameter("filters", i, "") as string;
-          if (advancedFilters) filters.filters = advancedFilters;
-          
-          const raw = this.getNodeParameter("raw", i) as boolean;
-          filters.raw = raw;
-          
-          const contacts = await ContactsService.getContacts(
-            filters,
-            credentials.apiKey
-          );
-          
-          // Debug: Check what we actually got back
-          if (!Array.isArray(contacts)) {
-            throw new Error(`Expected array but got: ${typeof contacts}. Value: ${JSON.stringify(contacts)}`);
-          }
-          
-          returnData.push(...contacts.map((c) => ({ json: c as IDataObject })));
+          const contact = await ContactsService.getContact(uuid, credentials.apiKey);
+          returnData.push({ json: contact } as INodeExecutionData);
         } else if (operation === "createContact") {
-          const data = JSON.parse(
-            this.getNodeParameter("contactData", i) as unknown as string
-          ) as { linkedin_id: string } & Partial<Contact>;
-          if (!data.linkedin_id) throw new Error("linkedin_id is required");
-          const contact = await ContactsService.createContact(
-            data,
-            credentials.apiKey
-          );
-          returnData.push({ json: contact as IDataObject });
+          const data = buildContactInput.call(this, i);
+          const contact = await ContactsService.createContact(data, credentials.apiKey);
+          returnData.push({ json: contact } as INodeExecutionData);
         } else if (operation === "updateContact") {
-          const identifier = JSON.parse(
-            this.getNodeParameter("identifier", i) as unknown as string
-          ) as unknown as {
-            linkedin_id?: string;
-            email?: string;
-            uuid?: string;
-          };
-          const data = JSON.parse(
-            this.getNodeParameter("contactData", i) as unknown as string
-          ) as Partial<Contact>;
-          const contact = await ContactsService.updateContact(
-            identifier,
-            data,
-            credentials.apiKey
-          );
-          returnData.push({ json: contact as IDataObject });
+          const uuid = this.getNodeParameter("uuid", i) as string;
+          const data = buildContactInput.call(this, i);
+          const contact = await ContactsService.updateContact(uuid, data, credentials.apiKey);
+          returnData.push({ json: contact } as INodeExecutionData);
         } else if (operation === "deleteContact") {
-          const identifier = JSON.parse(
-            this.getNodeParameter("identifier", i) as unknown as string
-          ) as unknown as {
-            linkedin_id?: string;
-            email?: string;
-            uuid?: string;
-          };
-          await ContactsService.deleteContact(identifier, credentials.apiKey);
-          returnData.push({
-            json: { success: true, ...identifier } as IDataObject,
-          });
+          const uuid = this.getNodeParameter("uuid", i) as string;
+          await ContactsService.deleteContact(uuid, credentials.apiKey);
+          returnData.push({ json: { success: true, uuid } } as INodeExecutionData);
         }
       } catch (error: any) {
-        returnData.push({ json: { error: error.message } as IDataObject });
+        returnData.push({ json: { error: error.message } } as INodeExecutionData);
       }
     }
+
     return this.prepareOutputData(returnData);
   }
+}
+
+async function handleListContacts(
+  this: IExecuteFunctions,
+  i: number,
+  apiKey: string,
+) {
+  const query: ContactSearchQuery = {};
+  const page = this.getNodeParameter("page", i) as number;
+  const perPage = this.getNodeParameter("perPage", i) as number;
+  const search = this.getNodeParameter("search", i) as string;
+  const listUuid = this.getNodeParameter("listUuid", i) as string;
+  const archived = this.getNodeParameter("archived", i) as boolean;
+  const isFavorite = this.getNodeParameter("isFavorite", i) as boolean;
+
+  if (page) query.page = page;
+  if (perPage) query.per_page = perPage;
+  if (search) query.search = search;
+  if (listUuid) query.list_uuid = listUuid;
+  if (archived) query.archived = archived;
+  if (isFavorite) query.is_favorite = isFavorite;
+
+  return ContactsService.getContacts(query, apiKey);
+}
+
+function buildContactInput(this: IExecuteFunctions, i: number): ContactInput {
+  const fields = [
+    "firstName", "lastName", "email", "phone",
+    "website", "headline", "location", "countryIso",
+  ] as const;
+
+  const data: Record<string, string> = {};
+  for (const field of fields) {
+    const value = this.getNodeParameter(field, i, "") as string;
+    if (value) data[field] = value;
+  }
+
+  return data as unknown as ContactInput;
 }
 
 export default Contacts;

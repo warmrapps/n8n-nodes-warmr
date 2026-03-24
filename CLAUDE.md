@@ -27,40 +27,46 @@ pnpm format
 
 ## Project Architecture
 
-This is an n8n community node package that integrates with the Warmr API. The codebase follows n8n's node development standards with a clear separation of concerns:
+This is an n8n community node package that integrates with the Warmr v1 API (`https://api.warmr.app/v1`). The codebase follows n8n's node development standards with a clear separation of concerns:
 
 ### Core Components
 
-1. **Nodes** (`/nodes/Contacts.node.ts`): The main n8n node implementation that defines the UI and operations available in n8n workflows. Currently supports:
-   - Get contacts with filters
-   - Create contacts (LinkedIn URL required)
-   - Update contacts (by LinkedIn URL, email, or UUID)
-   - Delete contacts (by LinkedIn URL, email, or UUID)
+1. **Nodes** (`/nodes/`): n8n node implementations that define the UI and operations available in n8n workflows.
+   - `Contacts.node.ts`: List, get, create, update, delete contacts
+   - `Lists.node.ts`: CRUD lists + add/remove contacts from lists
+   - `Companies.node.ts`: List and get companies
 
-2. **Services** (`/services/ContactsService.ts`): Business logic layer that handles API communication with the Warmr API at `https://api.warmr.app`. All HTTP requests go through this service layer.
+2. **Services** (`/services/`): Business logic layer that handles API communication with the Warmr v1 API. All HTTP requests go through this service layer.
+   - `ContactsService.ts`: Contact CRUD operations
+   - `ListsService.ts`: List CRUD + membership operations
+   - `CompaniesService.ts`: Company read operations
 
-3. **Credentials** (`/credentials/WarmrApi.credentials.ts`): Defines the credential schema for Warmr API authentication using Bearer token.
+3. **Credentials** (`/credentials/WarmrApi.credentials.ts`): Defines the credential schema for Warmr API authentication using Bearer token (prefix: `wpa_`).
 
-4. **Types** (`/types/contact.types.ts`): TypeScript type definitions for contacts and API queries.
+4. **Types** (`/types/`): TypeScript type definitions matching the v1 API schema.
+   - `contact.types.ts`: Contact, ContactInput, ContactSearchQuery, PaginatedResponse
+   - `list.types.ts`: List, ListInput, ListSearchQuery
+   - `company.types.ts`: Company, CompanySearchQuery
 
-5. **Utils** (`/utils/request.ts`): HTTP request utilities for API communication.
+5. **Utils** (`/utils/request.ts`): Generic HTTP request utility for API communication.
 
 ### Build Configuration
 
 - TypeScript compiles to CommonJS format in the `/dist` directory
 - Strict TypeScript checking is enabled
+- ESLint with `@typescript-eslint` for linting
 - The package uses n8n-workflow and n8n-core as dependencies
 - Build automatically bumps the patch version
 
 ### n8n Integration Points
 
 - Node registration happens through `package.json` under the `n8n` field
-- Credentials are registered at `dist/credentials/WarmrApi.credentials.js`
-- The main node is registered at `dist/nodes/Contacts.node.js`
+- Credentials: `dist/credentials/WarmrApi.credentials.js`
+- Nodes: `dist/nodes/Contacts.node.js`, `dist/nodes/Lists.node.js`, `dist/nodes/Companies.node.js`
 
 ### Key Development Notes
 
-- Always use absolute paths when building or referencing files
-- The node follows n8n's INodeType interface pattern
-- API requests should always go through the ContactsService layer
+- The nodes follow n8n's INodeType interface pattern
+- API requests should always go through the service layer
 - All new features should maintain the existing service/node separation
+- All API calls target the `/v1` prefix
