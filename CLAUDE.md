@@ -35,11 +35,15 @@ This is an n8n community node package that integrates with the Warmr v1 API (`ht
    - `Contacts.node.ts`: List, get, create, update, delete contacts
    - `Lists.node.ts`: CRUD lists + add/remove contacts from lists
    - `Companies.node.ts`: List and get companies
+   - `Tags.node.ts`: CRUD tags + get/set contact tags
+   - `Pipelines.node.ts`: CRUD pipelines + CRUD stages + add/remove contacts from stages
 
 2. **Services** (`/services/`): Business logic layer that handles API communication with the Warmr v1 API. All HTTP requests go through this service layer.
    - `ContactsService.ts`: Contact CRUD operations
    - `ListsService.ts`: List CRUD + membership operations
    - `CompaniesService.ts`: Company read operations
+   - `TagsService.ts`: Tag CRUD + contact tag assignment
+   - `PipelinesService.ts`: Pipeline/stage CRUD + stage contact management
 
 3. **Credentials** (`/credentials/WarmrApi.credentials.ts`): Defines the credential schema for Warmr API authentication using Bearer token (prefix: `wpa_`).
 
@@ -47,6 +51,8 @@ This is an n8n community node package that integrates with the Warmr v1 API (`ht
    - `contact.types.ts`: Contact, ContactInput, ContactSearchQuery, PaginatedResponse
    - `list.types.ts`: List, ListInput, ListSearchQuery
    - `company.types.ts`: Company, CompanySearchQuery
+   - `tag.types.ts`: Tag, TagInput
+   - `pipeline.types.ts`: Pipeline, PipelineInput, PipelineStage, PipelineStageInput
 
 5. **Utils** (`/utils/request.ts`): Generic HTTP request utility for API communication.
 
@@ -62,7 +68,7 @@ This is an n8n community node package that integrates with the Warmr v1 API (`ht
 
 - Node registration happens through `package.json` under the `n8n` field
 - Credentials: `dist/credentials/WarmrApi.credentials.js`
-- Nodes: `dist/nodes/Contacts.node.js`, `dist/nodes/Lists.node.js`, `dist/nodes/Companies.node.js`
+- Nodes: `dist/nodes/Contacts.node.js`, `dist/nodes/Lists.node.js`, `dist/nodes/Companies.node.js`, `dist/nodes/Tags.node.js`, `dist/nodes/Pipelines.node.js`
 
 ### Key Development Notes
 

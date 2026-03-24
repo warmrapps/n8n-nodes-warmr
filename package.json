@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-warmr",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "n8n community node for Warmr integration",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -46,7 +46,9 @@
     "nodes": [
       "dist/nodes/Contacts.node.js",
       "dist/nodes/Lists.node.js",
-      "dist/nodes/Companies.node.js"
+      "dist/nodes/Companies.node.js",
+      "dist/nodes/Tags.node.js",
+      "dist/nodes/Pipelines.node.js"
     ]
   },
   "scripts": {
